@@ -7,7 +7,7 @@ local Window = Rayfield:CreateWindow({
    Theme = "Amethyst"
 })
 
-local Tab = Window:CreateTab("Auto Farm", 4483362458) -- Title, Image
+local Tab = Window:CreateTab1("Auto Farm", 4483362458) -- Title, Image
 local Tab = Window:CreateTab("Pqp", "rewind")
-local Section = Tab:CreateSection("Section Example")
+local Section = Tab:CreateSection1("Section Example")
 Section:Set("Section Example")
