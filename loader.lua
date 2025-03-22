@@ -24,14 +24,15 @@ ToggleAutoOrb:Set(false)
 
 spawn(function()
     while true do
-        if _G.AutoOrb then -- Corrigido para usar a variável _G.AutoOrb
-            local args = {
-                [1] = "collectOrb",
-                [2] = "Red Orb",
-                [3] = "City"
-            }
+        if _G.AutoOrb then
 
-            game:GetService("ReplicatedStorage").rEvents.orbEvent:FireServer(unpack(args))
+local args = {
+    [1] = "collectOrb",
+    [2] = "Red Orb",
+    [3] = "Magma City"
+}
+
+game:GetService("ReplicatedStorage").rEvents.orbEvent:FireServer(unpack(args))
 
         end
         wait()
