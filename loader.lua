@@ -36,7 +36,11 @@ spawn(function()
     end
 end)
 
-local Toggle1 = Tab:CreatToggle({
+local Section = Tab:CreateSection("Section Example")
+
+Section:Set("Section Example")
+
+local Toggle = Tab:CreatToggle({
   Name = "Auto Egg",
   CurrentValue = false,
   Flag = "Toggle1",
@@ -63,3 +67,11 @@ game:GetService("ReplicatedStorage").Remotes.Server:FireServer(unpack(args))
 wait()
   end 
 end)
+
+
+
+
+local Divider = Tab:CreateDivider()
+
+Divider:Set(false) -- Whether the divider's visibility is to be set to true or false.
+Rayfield:Destroy()
