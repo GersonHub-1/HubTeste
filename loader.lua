@@ -1,39 +1,39 @@
-local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 local Window = Rayfield:CreateWindow({
-   Name = "Alucard Hub | Evo Tycoon",
-   Icon = 17091459839,
-   LoadingTitle = "Alucard Hub",
-   LoadingSubtitle = "By Alucard",
-   Theme = "Amethyst"
+    Name = "Alucard Hub | Evo Tycoon",
+    Icon = 17091459839,
+    LoadingTitle = "Alucard Hub",
+    LoadingSubtitle = "By Alucard",
+    Theme = "Amethyst"
 })
 
 local Tab = Window:CreateTab("Auto Farm", 4483362458) -- Criando o Tab principal
 
 -- Toggle para Auto Click
-local ToggleAutoFarm = Tab:CreateToggle({
-    Name = "Auto Farm",
+local ToggleAutoOrb = Tab:CreateToggle({
+    Name = "Auto Orb",
     CurrentValue = false,
-    Flag = "ToggleAitoFarm",
+    Flag = "ToggleAutoOrb",
     Callback = function(Value)
         _G.AutoOrb = Value
     end,
 })
 
-ToggleAutoClick:Set(false) 
+-- Corrigido ToggleAutoFarm para que seja configurado corretamente
+ToggleAutoOrb:Set(false)
 
 spawn(function()
     while true do
-        if _G.AutoClick then
-local args = {
-    [1] = "collectOrb",
-    [2] = "Red Orb",
-    [3] = "City"
-}
+        if _G.AutoOrb then -- Corrigido para usar a variável _G.AutoOrb
+            local args = {
+                [1] = "collectOrb",
+                [2] = "Red Orb",
+                [3] = "City"
+            }
 
-game:GetService("ReplicatedStorage").rEvents.orbEvent:FireServer(unpack(args))
+            game:GetService("ReplicatedStorage").rEvents.orbEvent:FireServer(unpack(args))
 
-          end 
+        end
         wait()
     end
 end)
-
