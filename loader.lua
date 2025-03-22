@@ -12,7 +12,7 @@ local Tab = Window:CreateTab("Auto Farm", 4483362458) -- Title, Image
 local Toggle = Tab:CreateToggle({
     Name = "Auto click",
     CurrentValue = false,
-    Flag = "Toggle1",
+    Flag = "Toggle",
     Callback = function(Value)
         _G.AutoClick = Value  -- Atualiza o estado do AutoClick com o Toggle
     end,
@@ -39,7 +39,7 @@ end)
 local Toggle1 = Tab:CreatToggle({
   Name = "Auto Egg",
   CurrentValue = false,
-  Flag = "Toggle2",
+  Flag = "Toggle1",
   Callback = function(Value)
     _G.AutoEgg = Value 
     end,
@@ -61,5 +61,5 @@ end
 
 game:GetService("ReplicatedStorage").Remotes.Server:FireServer(unpack(args))
 wait()
-end 
+  end 
 end)
