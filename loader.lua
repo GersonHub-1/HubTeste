@@ -74,5 +74,3 @@ end)
 -- Criar um divisor visual
 local Divider = Tab:CreateDivider()
 Divider:Set(true)
-
-Rayfield:Destroy()
