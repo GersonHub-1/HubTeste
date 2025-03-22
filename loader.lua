@@ -3,7 +3,7 @@ local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/d
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
 
 local Window = Fluent:CreateWindow({
-    Title = "Alucard Hub " .. Fluent.Version,
+    Title = "Alucard  " .. Fluent.Version,
     SubTitle = "by alucard",
     TabWidth = 160,
     Size = UDim2.fromOffset(580, 460),
@@ -31,21 +31,42 @@ do
 
 
     Tabs.Main:AddParagraph({
-        Title = "Hub Farm",
-        Content = "farm"
+        Title = "Auto Farm",
+        Content = "Farm"
     })
 
 
 
+    
 
-    local Toggle = Tabs.Main:AddToggle("Auto Click", {Title = "", Default = false })
+
+    local Toggle = Tabs.Main:AddToggle("MyToggle", {Title = "Toggle", Default = false })
 
     Toggle:OnChanged(function()
-        print("Farm Ativado:", Options.MyToggle.Value)
+        print("Toggle changed:", Options.MyToggle.Value)
     end)
 
     Options.MyToggle:SetValue(false)
 
+
+    
+    local Slider = Tabs.Main:AddSlider("Slider", {
+        Title = "Slider",
+        Description = "This is a slider",
+        Default = 2,
+        Min = 0,
+        Max = 5,
+        Rounding = 1,
+        Callback = function(Value)
+            print("Slider was changed:", Value)
+        end
+    })
+
+    Slider:OnChanged(function(Value)
+        print("Slider changed:", Value)
+    end)
+
+    Slider:SetValue(3)
 
 
 
