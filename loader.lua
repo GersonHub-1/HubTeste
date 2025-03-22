@@ -35,3 +35,31 @@ spawn(function()
         wait() -- Evita sobrecarregar o jogo
     end
 end)
+
+local Toggle = Tab:CreatToggle({
+  Name = "Auto Egg",
+  CurrentValue = false,
+  Flag = "Toggle2",
+  Callback = function(Value)
+    _G.AutoEgg = Value 
+    end,
+})
+Toggle:Set(false)
+
+spawn(function)()
+  while true do 
+    if _G.AutoEgg then 
+      local args = {
+    [1] = {
+        [1] = "TierBuy",
+        [2] = workspace.Client.Maps.Zaruto.Interact.Tier,
+        [3] = "E",
+        [4] = {}
+    }
+}
+end
+
+game:GetService("ReplicatedStorage").Remotes.Server:FireServer(unpack(args))
+wait()
+end 
+end)
