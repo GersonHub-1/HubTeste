@@ -36,7 +36,7 @@ spawn(function()
     end
 end)
 
-local Toggle = Tab:CreatToggle({
+local Toggle1 = Tab:CreatToggle({
   Name = "Auto Egg",
   CurrentValue = false,
   Flag = "Toggle2",
