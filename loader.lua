@@ -52,14 +52,13 @@ spawn(function()
     while true do
         if _G.AutoEgg then
 
-local args = {
-    [1] = "rollChampion",
-    [2] = "two",
-    [3] = "shinobi world"
-}
-
+           local args = {
+                [1] = "rollChampion",
+                     [2] = "two",
+                     [3] = "shinobi world"
+                  }
+          }
 game:GetService("ReplicatedStorage").Shared.events.RemoteEvent:FireServer(unpack(args))
-
         wait()
     end
 end)
