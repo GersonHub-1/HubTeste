@@ -24,6 +24,19 @@ local ToggleAutoOrb = Tab:CreateToggle({
     end,
 })
 
+
+local ToggleAutoRebirth = Tab:CreateToggle({
+  Name = "Auto Rebirth",
+  CurrentValue = (),
+  Flag = "AutoRebirth",
+  Callback = function(Value)
+        _G.AutoRebirth = Value 
+   end,
+
+})
+
+
+
 -- Função para Auto Orb
 spawn(function()
     while wait() do
