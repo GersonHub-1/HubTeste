@@ -27,7 +27,12 @@ spawn(function()
         if _G.AutoOrb then
             local orbs = {
                 {"collectOrb", "Red Orb", "Magma City"},
-                {"collectOrb", "Red Orb", "City"}
+                {"collectOrb", "Red Orb", "City"},
+                {"collectOrb", "Yellow Orb", "City"},
+                {"collectOrb", "Blue Orb", "City"},
+                {"collectOrb", "Red Orb", "City"},
+                {"collectOrb", "Gem Orb", "City"},
+                
             }
 
             for _, args in ipairs(orbs) do
