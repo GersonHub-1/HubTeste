@@ -27,10 +27,9 @@ local ToggleAutoOrb = Tab:CreateToggle({
 
 local ToggleAutoRebirth = Tab:CreateToggle({
   Name = "Auto Rebirth",
-  CurrentValue = (),
+  CurrentValue = (False),
   Flag = "AutoRebirth",
   Callback = function(Value)
-        _G.AutoRebirth = Value 
    end,
 
 })
