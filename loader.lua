@@ -64,6 +64,6 @@ spawn(function()
 game:GetService("ReplicatedStorage").rEvents.raceEvent:FireServer(unpack(args))
             end
        end
-        wait()
+        wait(5)
     end 
 end)
