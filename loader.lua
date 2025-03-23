@@ -10,9 +10,11 @@ local Window = Rayfield:CreateWindow({
 
 local Tab = Window:CreateTab("Auto Farm", 4483362458) -- Criando o Tab principal
 
--- Definir variáveis globais corretamente
+-- Definir variáveis globais
 _G.AutoOrb = false
 _G.AutoRace = false
+_G.AutoRebirth = false
+_G.StartPosition = nil
 
 -- Toggle para Auto Orb
 local ToggleAutoOrb = Tab:CreateToggle({
@@ -24,42 +26,6 @@ local ToggleAutoOrb = Tab:CreateToggle({
     end,
 })
 
-
-local ToggleAutoRebirth = Tab:CreateToggle({
-  Name = "Auto Rebirth",
-  CurrentValue = (False),
-  Flag = "AutoRebirth",
-  Callback = function(Value)
-   end,
-
-})
-
-
-
--- Função para Auto Orb
-spawn(function()
-    while wait() do
-        if _G.AutoOrb then
-            local orbs = {
-                {"collectOrb", "Red Orb", "Magma City"},
-                {"collectOrb", "Red Orb", "City"},
-                {"collectOrb", "Yellow Orb", "City"},
-                {"collectOrb", "Blue Orb", "City"},
-                {"collectOrb", "Red Orb", "City"},
-                {"collectOrb", "Gem Orb", "City"},
-                {"collectOrb", "Yellow Orb", "Magma City"},
-                {"collectOrb", "Blue Orb", "Magma City"}
-            }
-
-            for _, args in ipairs(orbs) do
-                pcall(function()
-                    game:GetService("ReplicatedStorage").rEvents.orbEvent:FireServer(unpack(args))
-                end)
-            end
-        end
-    end
-end)
-
 -- Toggle para Auto Race
 local ToggleAutoRace = Tab:CreateToggle({
     Name = "Auto Race",
@@ -70,12 +36,70 @@ local ToggleAutoRace = Tab:CreateToggle({
     end,
 })
 
--- Função para Auto Race
+-- Toggle para Auto Rebirth
+local ToggleAutoRebirth = Tab:CreateToggle({
+    Name = "Auto Rebirth",
+    CurrentValue = _G.AutoRebirth,
+    Flag = "ToggleAutoRebirth",
+    Callback = function(Value)
+        _G.AutoRebirth = Value
+    end,
+})
+
+-- Função para Auto Orb
 spawn(function()
-    while task.wait(10) do
+    while task.wait(0.1) do
+        if _G.AutoOrb then
+            for _, args in ipairs({
+                {"collectOrb", "Red Orb", "Magma City"},
+                {"collectOrb", "Red Orb", "City"},
+                {"collectOrb", "Yellow Orb", "City"},
+                {"collectOrb", "Blue Orb", "City"},
+                {"collectOrb", "Red Orb", "City"},
+                {"collectOrb", "Gem Orb", "City"},
+                {"collectOrb", "Yellow Orb", "Magma City"},
+                {"collectOrb", "Blue Orb", "Magma City"}
+            }) do
+                pcall(function()
+                    game:GetService("ReplicatedStorage").rEvents.orbEvent:FireServer(unpack(args))
+                end)
+            end
+        end
+    end
+end)
+
+-- Função para Auto Race (com retorno à posição inicial)
+spawn(function()
+    local player = game.Players.LocalPlayer
+    while task.wait(5) do
         if _G.AutoRace then
+            -- Salvar a posição inicial do jogador antes de entrar na corrida
+            if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                _G.StartPosition = player.Character.HumanoidRootPart.Position
+            end
+            
+            -- Entrar na corrida
             pcall(function()
                 game:GetService("ReplicatedStorage").rEvents.raceEvent:FireServer("joinRace")
+            end)
+            
+            -- Aguardar a corrida terminar (ajuste o tempo conforme necessário)
+            task.wait(15) -- Tempo médio de uma corrida
+            
+            -- Voltar para a posição inicial
+            if _G.StartPosition and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                player.Character.HumanoidRootPart.CFrame = CFrame.new(_G.StartPosition)
+            end
+        end
+    end
+end)
+
+-- Função para Auto Rebirth
+spawn(function()
+    while task.wait(10) do
+        if _G.AutoRebirth then
+            pcall(function()
+                game:GetService("ReplicatedStorage").rEvents.rebirthEvent:FireServer()
             end)
         end
     end
