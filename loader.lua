@@ -48,7 +48,7 @@ local ToggleAutoRebirth = Tab:CreateToggle({
 
 -- Função para Auto Orb
 spawn(function()
-    while task.wait(0.1) do
+    while wait() do
         if _G.AutoOrb then
             for _, args in ipairs({
                 {"collectOrb", "Red Orb", "Magma City"},
@@ -71,7 +71,7 @@ end)
 -- Função para Auto Race (com retorno à posição inicial)
 spawn(function()
     local player = game.Players.LocalPlayer
-    while task.wait(5) do
+    while task.wait(1) do
         if _G.AutoRace then
             -- Salvar a posição inicial do jogador antes de entrar na corrida
             if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
@@ -82,17 +82,8 @@ spawn(function()
             pcall(function()
                 game:GetService("ReplicatedStorage").rEvents.raceEvent:FireServer("joinRace")
             end)
-            
-            -- Aguardar a corrida terminar (ajuste o tempo conforme necessário)
-            task.wait(15) -- Tempo médio de uma corrida
-            
-            -- Voltar para a posição inicial
-            if _G.StartPosition and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-                player.Character.HumanoidRootPart.CFrame = CFrame.new(_G.StartPosition)
-            end
-        end
-    end
-end)
+          end 
+
 
 -- Função para Auto Rebirth
 spawn(function()
