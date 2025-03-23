@@ -26,7 +26,7 @@ local ToggleAutoOrb = Tab:CreateToggle({
 
 -- Função para Auto Orb
 spawn(function()
-    while task.wait(0.5) do  -- Usando `task.wait()` para melhor desempenho
+    while wait() do
         if _G.AutoOrb then
             local orbs = {
                 {"collectOrb", "Red Orb", "Magma City"},
