@@ -34,6 +34,6 @@ spawn(function()
                 game:GetService("ReplicatedStorage").rEvents.orbEvent:FireServer(unpack(args))
             end
         end
-        task.wait(0.5) -- Pequeno delay para evitar sobrecarga no servidor
+        task.wait() -- Pequeno delay para evitar sobrecarga no servidor
     end
 end)
