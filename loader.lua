@@ -30,8 +30,12 @@ local args = {
     [1] = "collectOrb",
     [2] = "Red Orb",
     [3] = "Magma City"
-
-local args = 
+}
+game:GetService("ReplicatedStorage").rEvents.orbEvent:FireServer(unpack(args))
+end 
+wait()
+end
+local args = {
     [1] = "collectOrb",
     [2] = "Red Orb",
     [3] = "City"
