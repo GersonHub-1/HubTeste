@@ -9,7 +9,6 @@ local Window = Rayfield:CreateWindow({
 })
 
 local Tab = Window:CreateTab("Auto Farm", 4483362458) -- Criando o Tab principal
-
 -- Toggle para Auto Orb
 local ToggleAutoOrb = Tab:CreateToggle({
     Name = "Auto Orb",
@@ -32,7 +31,8 @@ spawn(function()
                 {"collectOrb", "Blue Orb", "City"},
                 {"collectOrb", "Red Orb", "City"},
                 {"collectOrb", "Gem Orb", "City"}
-                
+                 {"collectOrb", "Yellow Orb", "Magma City"},
+                  {"collectOrb", "Blue Orb", "Magma City"},
             }
 
             for _, args in ipairs(orbs) do
@@ -41,4 +41,29 @@ spawn(function()
         end
         wait() -- Pequeno delay para evitar sobrecarga no servidor
     end
+end)
+
+local ToggleAutoRace = Tab:CreatToggle({
+    Name = "Auto Race"
+    CurrentValue = false
+    Flag = "ToggleAutoRace"
+    Callback = function(Value)
+      _G.AutoRace = Value 
+      end,
+      
+})
+
+spawn(function()
+   while true do 
+        if _G.AutoRace then 
+            local AutoRace
+                local args = {
+                 [1] = "joinRace"
+            }
+
+game:GetService("ReplicatedStorage").rEvents.raceEvent:FireServer(unpack(args))
+            end
+       end
+        wait()
+    end 
 end)
