@@ -9,20 +9,24 @@ local Window = Rayfield:CreateWindow({
 })
 
 local Tab = Window:CreateTab("Auto Farm", 4483362458) -- Criando o Tab principal
+
+-- Definir variáveis globais corretamente
+_G.AutoOrb = false
+_G.AutoRace = false
+
 -- Toggle para Auto Orb
 local ToggleAutoOrb = Tab:CreateToggle({
     Name = "Auto Orb",
-    CurrentValue = false,
+    CurrentValue = _G.AutoOrb,
     Flag = "ToggleAutoOrb",
     Callback = function(Value)
         _G.AutoOrb = Value
     end,
 })
 
-ToggleAutoOrb:Set(false)
-
+-- Função para Auto Orb
 spawn(function()
-    while true do
+    while task.wait(0.5) do  -- Usando `task.wait()` para melhor desempenho
         if _G.AutoOrb then
             local orbs = {
                 {"collectOrb", "Red Orb", "Magma City"},
@@ -30,40 +34,37 @@ spawn(function()
                 {"collectOrb", "Yellow Orb", "City"},
                 {"collectOrb", "Blue Orb", "City"},
                 {"collectOrb", "Red Orb", "City"},
-                {"collectOrb", "Gem Orb", "City"}
-                 {"collectOrb", "Yellow Orb", "Magma City"},
-                  {"collectOrb", "Blue Orb", "Magma City"},
+                {"collectOrb", "Gem Orb", "City"},
+                {"collectOrb", "Yellow Orb", "Magma City"},
+                {"collectOrb", "Blue Orb", "Magma City"}
             }
 
             for _, args in ipairs(orbs) do
-                game:GetService("ReplicatedStorage").rEvents.orbEvent:FireServer(unpack(args))
+                pcall(function()
+                    game:GetService("ReplicatedStorage").rEvents.orbEvent:FireServer(unpack(args))
+                end)
             end
         end
-        wait() -- Pequeno delay para evitar sobrecarga no servidor
     end
 end)
 
-local ToggleAutoRace = Tab:CreatToggle({
-    Name = "Auto Race"
-    CurrentValue = false
-    Flag = "ToggleAutoRace"
+-- Toggle para Auto Race
+local ToggleAutoRace = Tab:CreateToggle({
+    Name = "Auto Race",
+    CurrentValue = _G.AutoRace,
+    Flag = "ToggleAutoRace",
     Callback = function(Value)
-      _G.AutoRace = Value 
-      end,
-      
+        _G.AutoRace = Value
+    end,
 })
 
+-- Função para Auto Race
 spawn(function()
-   while true do 
-        if _G.AutoRace then 
-            local AutoRace
-                local args = {
-                 [1] = "joinRace"
-            }
-
-game:GetService("ReplicatedStorage").rEvents.raceEvent:FireServer(unpack(args))
-            end
-       end
-        wait(5)
-    end 
+    while task.wait(10) do
+        if _G.AutoRace then
+            pcall(function()
+                game:GetService("ReplicatedStorage").rEvents.raceEvent:FireServer("joinRace")
+            end)
+        end
+    end
 end)
