@@ -69,3 +69,38 @@ spawn(function()
     end
 end)
 
+-- Criar um Toggle para Auto Orb
+local ToggleAutoGema = Tab:CreateToggle({
+    Name = "Auto Gema",
+    CurrentValue = _G.AutoOrb,
+    Flag = "ToggleAutoGema",
+    Callback = function(Value)
+        _G.AutoGem = Value
+    end,
+})
+
+-- Função para coletar Orbs automaticamente
+task.spawn(function()
+    local replicatedStorage = game:GetService("ReplicatedStorage")
+    local orbEvent = replicatedStorage:FindFirstChild("rEvents") and replicatedStorage.rEvents:FindFirstChild("orbEvent")
+
+    if not orbEvent then
+        warn("orbEvent não encontrado!")
+        return
+    end
+
+    local orbs = {
+        {"collectOrb", "Gem", "City"},
+        {"collectOrb", "Gem", "Desert"}
+    }
+
+    while wait() do -- Pequeno delay para evitar sobrecarga no servidor
+        if _G.AutoGema then
+            for _, args in ipairs(orbs) do
+                pcall(function()
+                    orbEvent:FireServer(unpack(args))
+                end)
+            end
+        end
+    end
+end)
