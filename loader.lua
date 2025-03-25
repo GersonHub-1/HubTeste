@@ -62,7 +62,7 @@ spawn(function()
                 {"collectOrb", "Yellow Orb", "Desert"},
                 {"collectOrb", "Blue Orb", "Desert"},
                  {"collectOrb", "Gem Orb", "Desert"},
-                 {"collectOrb", "Red Orb", "Desert"},
+                 {"collectOrb", "Red Orb", "Desert"}
             }) do
                 pcall(function()
                     game:GetService("ReplicatedStorage").rEvents.orbEvent:FireServer(unpack(args))
