@@ -80,16 +80,12 @@ local ToggleAutoGem = Tab:CreateToggle({
 })
 
 spawn(function()
-    while wait() do
-        if _G.AutoGem then
-            for _, args in ipairs({
-                {"collectGem", "Gem Orb", "Desert"},
-                
-            }) do
-                pcall(function()
-                    game:GetService("ReplicatedStorage").rEvents.orbEvent:FireServer(unpack(args))
-                end)
-            end
-        end
-    end
-end)
+    _G.AutoGem = true 
+    while _G.AutoGem = true do
+      wait()
+      local args = {
+    [1] = "collectOrb",
+    [2] = "Gem",
+    [3] = "Desert"
+}
+end
