@@ -83,8 +83,11 @@ spawn(function()
     while wait() do
         if _G.AutoOrb then
             for _, args in ipairs({
-                {"collectGem", "Gem Orb", "Desert"},
-                
+                local args = {
+    [1] = "collectOrb",
+    [2] = "Gem",
+    [3] = "Desert"
+}
             }) do
                 pcall(function()
                     game:GetService("ReplicatedStorage").rEvents.orbEvent:FireServer(unpack(args))
