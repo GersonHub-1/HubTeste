@@ -79,7 +79,6 @@ local ToggleAutoGem = Tab:CreateToggle({
     end,
 })
 
-spawn(function()
     _G.AutoGem = true 
     while _G.AutoGem = true do
       wait()
