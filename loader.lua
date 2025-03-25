@@ -14,7 +14,6 @@ local Tab = Window:CreateTab("Auto Farm", 4483362458) -- Criando o Tab principal
 _G.AutoOrb = false
 _G.AutoRace = false
 _G.AutoRebirth = false
-_G.AutoGem = false
 -- Toggle para Auto Orb
 local ToggleAutoOrb = Tab:CreateToggle({
     Name = "Auto Orb",
@@ -60,8 +59,10 @@ spawn(function()
                 {"collectOrb", "Yellow Orb", "Desert"},
                 {"collectOrb", "Blue Orb", "Desert"},
                  {"collectOrb", "Red Orb", "Desert"}
-            }) do
+                  {"collectOrb", "getmetatable Orb", "Desert"}
+            })
                 pcall(function()
+                  game:GetService("ReplicatedStorage").rEvents.orbEvent:FireServer(unpack(args))
                     game:GetService("ReplicatedStorage").rEvents.orbEvent:FireServer(unpack(args))
                 end)
             end
@@ -69,22 +70,3 @@ spawn(function()
     end
 end)
 
--- toggle AutoGem
-local ToggleAutoGem = Tab:CreateToggle({
-  Name = "Auto Gema",
-  CurrentValue = _G.AutoGem,
-  Flag = "ToggleAutoGem",
-  Callback = function(Value)
-    _G.AutoGem = Value
-    end,
-})
-
-    _G.AutoGem = true 
-    while _G.AutoGem = true do
-      wait()
-      local args = {
-    [1] = "collectOrb",
-    [2] = "Gem",
-    [3] = "Desert"
-}
-end
