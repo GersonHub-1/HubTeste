@@ -59,10 +59,9 @@ spawn(function()
                 {"collectOrb", "Yellow Orb", "Desert"},
                 {"collectOrb", "Blue Orb", "Desert"},
                  {"collectOrb", "Red Orb", "Desert"}
-                  {"collectOrb", "getmetatable Orb", "Desert"}
             })
                 pcall(function()
-                  game:GetService("ReplicatedStorage").rEvents.orbEvent:FireServer(unpack(args))
+                  
                     game:GetService("ReplicatedStorage").rEvents.orbEvent:FireServer(unpack(args))
                 end)
             end
