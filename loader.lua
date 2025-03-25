@@ -68,30 +68,3 @@ spawn(function()
     end
 end)
 
--- Função para Auto Race (com retorno à posição inicial)
-spawn(function()
-    local player = game.Players.LocalPlayer
-    while task.wait(1) do
-        if _G.AutoRace then
-            -- Salvar a posição inicial do jogador antes de entrar na corrida
-            if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-                _G.StartPosition = player.Character.HumanoidRootPart.Position
-            end
-            
-            -- Entrar na corrida
-            pcall(function()
-                game:GetService("ReplicatedStorage").rEvents.raceEvent:FireServer("joinRace")
-            end)
-          end 
-
-
--- Função para Auto Rebirth
-spawn(function()
-    while task.wait(10) do
-        if _G.AutoRebirth then
-            pcall(function()
-                game:GetService("ReplicatedStorage").rEvents.rebirthEvent:FireServer()
-            end)
-        end
-    end
-end)
