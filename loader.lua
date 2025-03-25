@@ -56,12 +56,10 @@ spawn(function()
                 {"collectOrb", "Yellow Orb", "City"},
                 {"collectOrb", "Blue Orb", "City"},
                 {"collectOrb", "Red Orb", "Magma City"},
-                {"collectOrb", "Gem Orb", "City"},
                 {"collectOrb", "Yellow Orb", "Magma City"},
                 {"collectOrb", "Blue Orb", "Magma City"},
                 {"collectOrb", "Yellow Orb", "Desert"},
                 {"collectOrb", "Blue Orb", "Desert"},
-                 {"collectOrb", "Gem Orb", "Desert"},
                  {"collectOrb", "Red Orb", "Desert"}
             }) do
                 pcall(function()
