@@ -22,7 +22,7 @@ local ToggleEgg = Tab:CreateToggle({
             wait()
             local args = {
                 [1] = "One Piece",
-                [2] = "Single"
+                [2] = "four"
             }
             game:GetService("ReplicatedStorage").Remotes.CrystalOpen:FireServer(unpack(args))
         end
