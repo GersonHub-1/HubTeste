@@ -1,42 +1,34 @@
-local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+-- Pega todos os heróis do jogador
+local function getAllHeroes()
+    local success, heroes = pcall(function()
+        return game:GetService("ReplicatedStorage").Remotes.GetHeroList:InvokeServer()
+    end)
+    return success and heroes or {}
+end
 
-local Window = Rayfield:CreateWindow({
-    Name = "Alucard Hub | Evo Tycoon",
-    Icon = 17091459839,
-    LoadingTitle = "Alucard Hub",
-    LoadingSubtitle = "By Alucard",
-    Theme = "Amethyst"
-})
+-- Função para pegar um mainHero e os demais como decompose
+local function getFuseData()
+    local heroes = getAllHeroes()
+    local guids = {}
 
-local Tab = Window:CreateTab("Auto Farm", 4483362458)
-
-_G.AutoEgg = false
-_G.AutoFuse = false
-
--- Auto Egg
-Tab:CreateToggle({
-    Name = "Auto Egg",
-    CurrentValue = false,
-    Callback = function(Value)
-        _G.AutoEgg = Value
-        task.spawn(function()
-            while _G.AutoEgg do
-                local args = {
-                    [1] = {
-                        ["drawCardPlatformId"] = 70001,
-                        ["count"] = 2
-                    }
-                }
-
-                pcall(function()
-                    game:GetService("ReplicatedStorage").Remotes.ExtractHero:InvokeServer(unpack(args))
-                end)
-
-                wait(1) -- Delay entre invocações para evitar lag ou excesso de chamadas
-            end
-        end)
+    for _, hero in pairs(heroes) do
+        if hero and hero.guid and not hero.locked then -- evita heróis trancados
+            table.insert(guids, hero.guid)
+        end
     end
-})
+
+    if #guids < 2 then return nil end -- precisa de pelo menos 2 para fusão
+
+    local main = guids[1]
+    table.remove(guids, 1)
+
+    return {
+        [1] = {
+            ["mainHeroGuid"] = main,
+            ["decomposeHeroGuids"] = guids
+        }
+    }
+end
 
 -- Auto Fuse
 Tab:CreateToggle({
@@ -46,26 +38,13 @@ Tab:CreateToggle({
         _G.AutoFuse = Value
         task.spawn(function()
             while _G.AutoFuse do
-                local args = {
-                    [1] = {
-                        ["mainHeroGuid"] = "cc006cb4-423a-4278-86fb-c588087ecf1b", -- Atualize esse valor dinamicamente se necessário
-                        ["decomposeHeroGuids"] = {
-                            -- IDs dos heróis para fusão (limite de 59 atualmente)
-                            -- Mantenha essa lista atualizada com base nos heróis disponíveis
-                            "GUID_1",
-                            "GUID_2",
-                            "GUID_3",
-                            -- ...
-                            "GUID_59"
-                        }
-                    }
-                }
-
-                pcall(function()
-                    game:GetService("ReplicatedStorage").Remotes.HeroFuse:FireServer(unpack(args))
-                end)
-
-                wait() -- Delay para fusões; tempo maior que o do Egg
+                local fuseArgs = getFuseData()
+                if fuseArgs then
+                    pcall(function()
+                        game:GetService("ReplicatedStorage").Remotes.HeroFuse:FireServer(unpack(fuseArgs))
+                    end)
+                end
+                wait(2) -- Delay maior para evitar travamentos
             end
         end)
     end
