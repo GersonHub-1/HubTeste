@@ -20,11 +20,16 @@ local ToggleEgg = Tab:CreateToggle({
         _G.AutoEgg = Value
         while _G.AutoEgg do 
             wait()
-            local args = {
-                [1] = "One Piece",
-                [2] = "four"
-            }
-            game:GetService("ReplicatedStorage").Remotes.CrystalOpen:FireServer(unpack(args))
+
+local args = {
+    [1] = {
+        ["drawCardPlatformId"] = 70001,
+        ["count"] = 2
+    }
+}
+
+game:GetService("ReplicatedStorage").Remotes.ExtractHero:InvokeServer(unpack(args))
+
         end
     end
 })
