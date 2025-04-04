@@ -32,7 +32,7 @@ Tab:CreateToggle({
                     game:GetService("ReplicatedStorage").Remotes.ExtractHero:InvokeServer(unpack(args))
                 end)
 
-                wait(1) -- Delay entre invocações
+                wait() -- Delay entre invocações
             end
         end)
     end
