@@ -6,32 +6,25 @@ local Window = Fluent:CreateWindow({
     Title = "Alucard Hub",
     SubTitle = "by alucard",
     TabWidth = 100, 
-    Size = UDim2.fromOffset(430, 300),
+    Size = UDim2.fromOffset(340, 240),
     Acrylic = false,
     Theme = "Dark",
     MinimizeKey = Enum.KeyCode.LeftControl 
 })
 local Tabs = {
-    Main = Window:AddTab({ Title = "Auto farm", Icon = "rbxassetid://18831448204" }),
-    Eggs = Window:AddTab({ Title = "• eggs", Icon = "rbxassetid://18319394996" }),
-     Settings = Window:AddTab({ Title = "setting", Icon = "rbxassetid://18319394996" }),
+    Main = Window:AddTab({ Title = "Auto farm", Icon = "rbxassetid://18831448204" }),     Settings = Window:AddTab({ Title = "setting", Icon = "rbxassetid://18831448204" }),
 } 
 Window:SelectTab(1)
 
- local Toggle = Tabs.Main:AddToggle("MyToggle", {Title = "Toggle", Default = false })
-
-    Toggle:OnChanged(function()
-        print("Toggle changed:", Options.MyToggle.Value)
-    end)
-
-    Options.MyToggle:SetValue(false)
-
-Window:SelectTab(2)
-
-local Toggle = Tabs.Main:AddToggle("Cuzin", {Title = "bah", Default = false })
-
-    Toggle:OnChanged(function()
-        print("Toggle changed:", Options.MyToggle.Value)
-    end)
-
-    Options.MyToggle:SetValue(false)
+ local MagnetToggle = Tabs.Main:AddToggle("MagnetToggle", {Title = "Magnet Drops", Default = false})
+MagnetToggle:OnChanged(function()
+    while MagnetToggle.Value do 
+        wait()
+        local drops = workspace.temp:GetChildren()
+        for _, drop in ipairs(drops) do
+            if drop:IsA("Part") and #drop.Name > 30 then
+                drop.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+            end
+        end
+    end
+end)
