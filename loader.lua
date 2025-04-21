@@ -6,13 +6,15 @@ local Window = Fluent:CreateWindow({
     Title = "Alucard Hub",
     SubTitle = "by alucard",
     TabWidth = 100, 
-    Size = UDim2.fromOffset(340, 240),
+    Size = UDim2.fromOffset(640, 550),
     Acrylic = false,
     Theme = "Dark",
     MinimizeKey = Enum.KeyCode.LeftControl 
 })
 local Tabs = {
-    Main = Window:AddTab({ Title = "Auto farm", Icon = "rbxassetid://18831448204" }),     Settings = Window:AddTab({ Title = "setting", Icon = "rbxassetid://18831448204" }),
+    Main = Window:AddTab({ Title = "Auto farm", Icon = "rbxassetid://18831448204" }), 
+    Eggs = Window:AddTab({ Title = "Auto Egg", Icon = "rbxassetid://18831448204" }),
+    Settings = Window:AddTab({ Title = "setting", Icon = "rbxassetid://18831448204" }),
 } 
 Window:SelectTab(1)
 
@@ -28,3 +30,5 @@ MagnetToggle:OnChanged(function()
         end
     end
 end)
+
+Window:SelectTab(2)
