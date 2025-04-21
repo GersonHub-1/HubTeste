@@ -14,11 +14,11 @@ local Window = Fluent:CreateWindow({
 local Tabs = {
     Main = Window:AddTab({ Title = "Auto farm", Icon = "rbxassetid://18831448204" }),
     Eggs = Window:AddTab({ Title = "• eggs", Icon = "rbxassetid://18319394996" }),
-     Settings = Window:AddTab({ Title = "setting", Icon = "rbxassetid://18831448204" }),
+     Settings = Window:AddTab({ Title = "setting", Icon = "rbxassetid://18319394996" }),
 } 
 Window:SelectTab(1)
 
- local Toggle = Tabs.Main:AddToggle("MyToggle", {Title = "Toggle", Default = false })
+ local Toggle = Tabs.Eggs:AddToggle("MyToggle", {Title = "Toggle", Default = false })
 
     Toggle:OnChanged(function()
         print("Toggle changed:", Options.MyToggle.Value)
