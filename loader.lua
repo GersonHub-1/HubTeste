@@ -36,7 +36,7 @@ MagnetToggle:OnChanged(function()
 end)
 
 -- Toggle Auto Egg (colocado em local separado e limpo)
-local AutoEggToggle = Tabs.Main:AddToggle("AutoEggToggle", {Title = "Auto Egg", Default = false})
+local AutoMaintoggle = Tabs.Main:AddToggle("AutoEggToggle", {Title = "Auto Egg", Default = false})
 AutoEggToggle:OnChanged(function(value)
     if value then
         print("Auto Egg ativado")
