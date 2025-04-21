@@ -18,9 +18,10 @@ local Tabs = {
 } 
 Window:SelectTab(1)
 
+ local Toggle = Tabs.Main:AddToggle("MyToggle", {Title = "Toggle", Default = false })
 
- local attack = Tabs.Main:AddToggle("Auto Click", {Title = "Auto", Default = false})
-attack:OnChanged(function()
-    while attack.Value do
-        wait(0.1)
-    (Remote de um jogo aleatório)
+    Toggle:OnChanged(function()
+        print("Toggle changed:", Options.MyToggle.Value)
+    end)
+
+    Options.MyToggle:SetValue(false)
