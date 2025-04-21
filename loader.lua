@@ -14,7 +14,7 @@ local Window = Fluent:CreateWindow({
 
 local Tabs = {
     Main = Window:AddTab({ Title = "Auto farm", Icon = "rbxassetid://18831448204" }),
-    Menu = Window:AddTab({ Title = "Auto Egg", Icon = "rbxassetid://18831448204" }),
+    Egg = Window:AddTab({ Title = "Auto Egg", Icon = "rbxassetid://18831448204" }),
     Settings = Window:AddTab({ Title = "Setting", Icon = "rbxassetid://18831448204" }),
 }
 
