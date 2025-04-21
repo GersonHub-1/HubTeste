@@ -6,7 +6,7 @@ local Window = Fluent:CreateWindow({
     Title = "Alucard Hub",
     SubTitle = "by alucard",
     TabWidth = 70,
-    Size = UDim2.fromOffset(450, 340),
+    Size = UDim2.fromOffset(550, 440),
     Acrylic = false,
     Theme = "Dark",
     MinimizeKey = Enum.KeyCode.LeftControl
@@ -36,7 +36,7 @@ MagnetToggle:OnChanged(function()
 end)
 
 -- Toggle Auto Egg (colocado em local separado e limpo)
-local AutoMainToggle = Tabs.Main:AddToggle("AutoMainToggle", {Title = "Auto Egg", Default = false})
+local AutoEggToggle = Tabs.Egg:AddToggle("AutoMainToggle", {Title = "Auto Egg", Default = false})
 AutoEggToggle:OnChanged(function(value)
     if value then
         print("Auto Egg ativado")
