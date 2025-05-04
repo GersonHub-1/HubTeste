@@ -28,7 +28,7 @@ MagnetToggle:OnChanged(function()
         wait()
         local drops = workspace.temp:GetChildren()
         for _, drop in ipairs(drops) do
-            if drop:IsA("Part") and #drop.Name > 30 then
+            if drop:IsA("workspace.Client.Maps") and #drop.Name > 30 then
                 drop.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
             end
         end
