@@ -1,7 +1,9 @@
+-- Carregando UI e gerenciadores
 local Fluent = loadstring(game:HttpGet("https://raw.githubusercontent.com/discoart/FluentPlus/refs/heads/main/release.lua"))()
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
 
+-- Criando a janela principal
 local Window = Fluent:CreateWindow({
     Title = "Alucard Hub",
     SubTitle = "by alucard",
@@ -12,6 +14,7 @@ local Window = Fluent:CreateWindow({
     MinimizeKey = Enum.KeyCode.LeftControl
 })
 
+-- Tabs
 local Tabs = {
     Main = Window:AddTab({ Title = "Auto farm", Icon = "rbxassetid://18831448204" }),
     Egg = Window:AddTab({ Title = "Auto Egg", Icon = "rbxassetid://18831448204" }),
@@ -21,26 +24,37 @@ local Tabs = {
 -- Seleciona a aba principal por padrão
 Window:SelectTab(1)
 
--- Toggle do Magnet
+-- Toggle do Magnet (Auto Collect Drops)
 local MagnetToggle = Tabs.Main:AddToggle("MagnetToggle", {Title = "Magnet Drops", Default = false})
-MagnetToggle:OnChanged(function()
-    while MagnetToggle.Value do
-        wait()
-        local drops = workspace.temp:GetChildren()
-        for _, drop in ipairs(drops) do
-            if drop:IsA("workspace.Client.Maps") and #drop.Name > 30 then
-                drop.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+MagnetToggle:OnChanged(function(enabled)
+    if enabled then
+        task.spawn(function()
+            while MagnetToggle.Value and task.wait(0.1) do
+                for _, drop in ipairs(workspace.temp:GetChildren()) do
+                    if drop:IsA("BasePart") and drop.Parent and drop.Parent.Name == "Drops" and #drop.Name > 30 then
+                        pcall(function()
+                            drop.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+                        end)
+                    end
+                end
             end
-        end
+        end)
     end
 end)
 
--- Toggle Auto Egg (colocado em local separado e limpo)
+-- Toggle Auto Egg
 local AutoEggToggle = Tabs.Egg:AddToggle("AutoEggToggle", {Title = "Auto Egg", Default = false})
-AutoEggToggle:OnChanged(function(value)
-    if value then
+AutoEggToggle:OnChanged(function(enabled)
+    if enabled then
         print("Auto Egg ativado")
-        -- Coloque aqui a lógica do Auto Egg
+        task.spawn(function()
+            while AutoEggToggle.Value and task.wait(1) do
+                local remote = game.ReplicatedStorage:FindFirstChild("OpenEgg")
+                if remote then
+                    remote:FireServer("EggName", 1) -- Substitua "EggName" pelo nome do ovo real
+                end
+            end
+        end)
     else
         print("Auto Egg desativado")
     end
