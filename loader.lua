@@ -14,11 +14,11 @@ local Window = Fluent:CreateWindow({
     MinimizeKey = Enum.KeyCode.LeftControl
 })
 
--- Tabs
+-- Tabs com ícones mais modernos
 local Tabs = {
-    Main = Window:AddTab({ Title = "Auto farm", Icon = "rbxassetid://18831448204" }),
-    Egg = Window:AddTab({ Title = "Auto Egg", Icon = "rbxassetid://18831448204" }),
-    Settings = Window:AddTab({ Title = "Setting", Icon = "rbxassetid://18831448204" }),
+    Main = Window:AddTab({ Title = "Auto farm", Icon = "rbxassetid://7733964644" }), -- Icone de espada
+    Egg = Window:AddTab({ Title = "Auto Egg", Icon = "rbxassetid://7734053499" }),   -- Icone de ovo brilhante
+    Settings = Window:AddTab({ Title = "Setting", Icon = "rbxassetid://7734096821" }) -- Icone de engrenagem
 }
 
 -- Seleciona a aba principal por padrão
@@ -31,7 +31,7 @@ MagnetToggle:OnChanged(function(enabled)
         task.spawn(function()
             while MagnetToggle.Value and task.wait(0.1) do
                 for _, drop in ipairs(workspace.temp:GetChildren()) do
-                    if drop:IsA("workspace.Drops["6390867c-3006-417a-a744-f81788d12327"]") and drop.Parent and drop.Parent.Name == "Drops" and #drop.Name > 30 then
+                    if drop:IsA("workspace.Drops[\"6390867c-3006-417a-a744-f81788d12327\"]") and drop.Parent and drop.Parent.Name == "Drops" and #drop.Name > 30 then
                         pcall(function()
                             drop.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
                         end)
