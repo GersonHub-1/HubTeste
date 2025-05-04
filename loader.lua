@@ -31,7 +31,7 @@ MagnetToggle:OnChanged(function(enabled)
         task.spawn(function()
             while MagnetToggle.Value and task.wait(0.1) do
                 for _, drop in ipairs(workspace.temp:GetChildren()) do
-                    if drop:IsA("BasePart") and drop.Parent and drop.Parent.Name == "Drops" and #drop.Name > 30 then
+                    if drop:IsA("workspace.Drops["6390867c-3006-417a-a744-f81788d12327"]") and drop.Parent and drop.Parent.Name == "Drops" and #drop.Name > 30 then
                         pcall(function()
                             drop.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
                         end)
