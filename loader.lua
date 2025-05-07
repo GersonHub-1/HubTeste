@@ -1,4 +1,12 @@
 
+
+local Icons = {};
+local Sucess, Response = pcall(function()
+  Icons = Get.HttpService:JSONDecode(
+    game:HttpGet("https://raw.githubusercontent.com/frappedwvs/lucideblox/refs/heads/master/src/modules/util/icons.json")
+    ).icons
+  end)
+
 local Fluent = loadstring(game:HttpGet("https://raw.githubusercontent.com/discoart/FluentPlus/refs/heads/main/release.lua"))()
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
