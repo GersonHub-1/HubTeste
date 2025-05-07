@@ -101,7 +101,7 @@ local AutoEggToggle = Tabs.Egg:AddToggle("AutoEggToggle", {Title = "Auto Egg", D
 AutoEggToggle:OnChanged(function(enabled)
     if enabled then
         task.spawn(function()
-            while AutoEggToggle.Value and task.wait(1) do
+            while AutoEggToggle.Value and wait() do
                 if selectedWorld == "One Piece" then
                     local selectedMap = workspace.Client.Maps:FindFirstChild("Piece Sea")
                     if selectedMap and selectedMap:FindFirstChild("Tier") and selectedMap.Tier:FindFirstChild("Basic Tier") then
