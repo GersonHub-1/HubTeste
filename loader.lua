@@ -29,15 +29,25 @@ local MagnetToggle = Tabs.Main:AddToggle("MagnetToggle", {Title = "Magnet Drops"
 MagnetToggle:OnChanged(function(enabled)
     if enabled then
         task.spawn(function()
-            while MagnetToggle.Value and task.wait() do
-                for _, drop in ipairs(workspace.debris:GetChildren()) do
-                    if drop:IsA("Part") and drop.Parent and drop.Parent.Name == "Drops" and #drop.Name > 30 then
+            while MagnetToggle.Value and wait() do
+                for _, drop in ipairs(workspace.Debris:GetChildren()) do
+                    if drop:IsA("Part") and drop.Parent and drop.Parent.Name == "Drops" and #drop.Name > 32 then
+                        -- Verificar se o drop é válido e não foi coletado
                         pcall(function()
-                            drop.CFrame = Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+                            -- Mover o drop para o jogador
+                            local player = Players.LocalPlayer
+                            if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                                drop.CFrame = player.Character.HumanoidRootPart.CFrame
+                            end
                         end)
                     end
                 end
             end
+        end)
+    else
+        -- Se o toggle for desligado, parar de buscar os drops
+        task.spawn(function()
+            -- Limpeza ou qualquer lógica adicional quando o MagnetToggle for desativado
         end)
     end
 end)
@@ -52,7 +62,7 @@ AutoClickToggle:OnChanged(function(enabled)
             local rootPart = character:WaitForChild("HumanoidRootPart")
             local remote = ReplicatedStorage.Remotes.Server
 
-            while AutoClickToggle.Value and task.wait() do
+            while AutoClickToggle.Value and wait() do
                 local mobs = workspace.Server.Mobs:GetDescendants()
                 local closestMob, shortestDistance = nil, math.huge
 
