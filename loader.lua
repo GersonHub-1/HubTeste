@@ -1,11 +1,6 @@
 
 
-local Icons = {};
-local Sucess, Response = pcall(function()
-  Icons = Get.HttpService:JSONDecode(
-    game:HttpGet("https://raw.githubusercontent.com/frappedwvs/lucideblox/refs/heads/master/src/modules/util/icons.json")
-    ).icons
-  end)
+
 
 local Fluent = loadstring(game:HttpGet("https://raw.githubusercontent.com/discoart/FluentPlus/refs/heads/main/release.lua"))()
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
@@ -109,3 +104,16 @@ InterfaceManager:BuildInterfaceSection(Tabs.Settings)
 
 -- Carrega último perfil salvo automaticamente
 SaveManager:LoadAutoloadConfig()
+
+
+DefaultTab = Window: NewTab({Title = "Default", Icon = GetRandomIcon()}) -- "house"
+
+FarmTab = Window: NewTab({Title = "Farm", Icon = GetRandomIcon()}) "circle-play"
+
+ServerTab = Window: NewTab({Title = "Server & Info", Icon = GetRandomIcon())) -- "activity"
+
+PlayerTab = Window: NewTab({Title = "Local Player", Icon = GetRandomIcon()}) -- "user"
+
+MiscTab = Window: NewTab({Title = "Misc", Icon = GetRandomIcon()}) -- "list-plus"
+
+SettingTab = Window: NewTab((Title = "Setting", Icon = GetRandomIcon()}) - "settings"
