@@ -42,7 +42,7 @@ local debrisConnection
 
 local function startMagnet()
     debrisConnection = debrisFolder.ChildAdded:Connect(function(child)
-        task.wait(0.1)
+        wait()
         if MagnetToggle.Value then
             pcall(function()
                 moveItemToPlayer(child)
@@ -76,7 +76,7 @@ AutoClickToggle:OnChanged(function(enabled)
             local rootPart = character:WaitForChild("HumanoidRootPart")
             local remote = ReplicatedStorage.Remotes.Server
 
-            while AutoClickToggle.Value and task.wait() do
+            while AutoClickToggle.Value and wait() do
                 local mobs = workspace.Server.Mobs:GetDescendants()
                 local closestMob, shortestDistance = nil, math.huge
 
