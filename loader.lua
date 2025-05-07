@@ -3,6 +3,8 @@ local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/d
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local debrisFolder = workspace:WaitForChild("Debris")
 
 -- Criando a janela principal
 local Window = Fluent:CreateWindow({
@@ -24,31 +26,43 @@ local Tabs = {
 
 Window:SelectTab(1)
 
--- Toggle Magnet Drops
+-- Função para mover item até o jogador
+local function moveItemToPlayer(item)
+    local character = player.Character or player.CharacterAdded:Wait()
+    if item:IsA("Tool") then
+        item.Parent = character
+    elseif item:IsA("Part") then
+        item.CFrame = character:WaitForChild("HumanoidRootPart").CFrame + Vector3.new(0, 2, 0)
+    end
+end
+
+-- Toggle Magnet Drops (Corrigido)
 local MagnetToggle = Tabs.Main:AddToggle("MagnetToggle", {Title = "Magnet Drops", Default = false})
+local debrisConnection
+
+local function startMagnet()
+    debrisConnection = debrisFolder.ChildAdded:Connect(function(child)
+        task.wait(0.1)
+        if MagnetToggle.Value then
+            pcall(function()
+                moveItemToPlayer(child)
+            end)
+        end
+    end)
+end
+
+local function stopMagnet()
+    if debrisConnection then
+        debrisConnection:Disconnect()
+        debrisConnection = nil
+    end
+end
+
 MagnetToggle:OnChanged(function(enabled)
     if enabled then
-        task.spawn(function()
-            while MagnetToggle.Value and wait() do
-                for _, drop in ipairs(workspace.Debris:GetChildren()) do
-                    if drop:IsA("Part") and drop.Parent and drop.Parent.Name == "Drops" and #drop.Name > 32 then
-                        -- Verificar se o drop é válido e não foi coletado
-                        pcall(function()
-                            -- Mover o drop para o jogador
-                            local player = Players.LocalPlayer
-                            if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-                                drop.CFrame = player.Character.HumanoidRootPart.CFrame
-                            end
-                        end)
-                    end
-                end
-            end
-        end)
+        startMagnet()
     else
-        -- Se o toggle for desligado, parar de buscar os drops
-        task.spawn(function()
-            -- Limpeza ou qualquer lógica adicional quando o MagnetToggle for desativado
-        end)
+        stopMagnet()
     end
 end)
 
@@ -62,7 +76,7 @@ AutoClickToggle:OnChanged(function(enabled)
             local rootPart = character:WaitForChild("HumanoidRootPart")
             local remote = ReplicatedStorage.Remotes.Server
 
-            while AutoClickToggle.Value and wait() do
+            while AutoClickToggle.Value and task.wait() do
                 local mobs = workspace.Server.Mobs:GetDescendants()
                 local closestMob, shortestDistance = nil, math.huge
 
