@@ -16,9 +16,9 @@ local Window = Fluent:CreateWindow({
 
 -- Tabs com ícones mais modernos
 local Tabs = {
-    Main = Window:AddTab({ Title = "Auto farm", Icon = "phosphor-users-bold" }), -- Icone de espada
-    Egg = Window:AddTab({ Title = "Auto Egg", Icon = "rbxassetid://7734053499" }),   -- Icone de ovo brilhante
-    Settings = Window:AddTab({ Title = "Setting", Icon = "settings" }) -- Icone de engrenagem
+    Main = Window:AddTab({ Title = "| Farm", Icon = "phosphor-users-bold" }), -- Icone de espada
+    Egg = Window:AddTab({ Title = "| Summon", Icon = "rbxassetid://7734053499" }),   -- Icone de ovo brilhante
+    Settings = Window:AddTab({ Title = "| Setting", Icon = "settings" }) -- Icone de engrenagem
 }
 
 -- Seleciona a aba principal por padrão
