@@ -16,7 +16,7 @@ local Window = Fluent:CreateWindow({
 
 -- Tabs com ícones mais modernos
 local Tabs = {
-    Main = Window:AddTab({ Title = "Farm", Icon = "" }),
+    Main = Window:AddTab({ Title = " | Farm", Icon = "" }),
     Egg = Window:AddTab({ Title = "Summon", Icon = "" }),
     Settings = Window:AddTab({ Title = "Setting", Icon = "settings" }) -- Icone de engrenagem
 }
