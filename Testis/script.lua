@@ -51,7 +51,7 @@ AutoClickToggle:OnChanged(function(enabled)
             local rootPart = character:WaitForChild("HumanoidRootPart")
             local remote = game:GetService("ReplicatedStorage").Remotes.Server
 
-            while AutoClickToggle.Value and task.wait(0.1) do
+            while AutoClickToggle.Value and wait() do
                 local mobs = workspace.Server.Mobs:GetDescendants()
                 local closestMob = nil
                 local shortestDistance = math.huge
