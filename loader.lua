@@ -19,9 +19,9 @@ local Window = Fluent:CreateWindow({
 
 -- Tabs com ícones mais modernos
 local Tabs = {
-    Main = Window:AddTab({ Title = " | Farm", Icon = "" }),
-    Egg = Window:AddTab({ Title = "Summon", Icon = "" }),
-    Settings = Window:AddTab({ Title = "Setting", Icon = "settings" }) -- Icone de engrenagem
+    Farm = Window:AddTab({ Title = " | Farm", Icon = "" }),
+    Summon = Window:AddTab({ Title = " | Summon", Icon = "" }),
+    Settings = Window:AddTab({ Title = " | Setting", Icon = "settings" })
 }
 
 -- Seleciona a aba principal por padrão
@@ -105,15 +105,3 @@ InterfaceManager:BuildInterfaceSection(Tabs.Settings)
 -- Carrega último perfil salvo automaticamente
 SaveManager:LoadAutoloadConfig()
 
-
-DefaultTab = Window: NewTab({Title = "Default", Icon = GetRandomIcon()}) -- "house"
-
-FarmTab = Window: NewTab({Title = "Farm", Icon = GetRandomIcon()}) "circle-play"
-
-ServerTab = Window: NewTab({Title = "Server & Info", Icon = GetRandomIcon())) -- "activity"
-
-PlayerTab = Window: NewTab({Title = "Local Player", Icon = GetRandomIcon()}) -- "user"
-
-MiscTab = Window: NewTab({Title = "Misc", Icon = GetRandomIcon()}) -- "list-plus"
-
-SettingTab = Window: NewTab((Title = "Setting", Icon = GetRandomIcon()}) - "settings"
