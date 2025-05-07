@@ -1,7 +1,5 @@
 
 
-
-
 local Fluent = loadstring(game:HttpGet("https://raw.githubusercontent.com/discoart/FluentPlus/refs/heads/main/release.lua"))()
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
@@ -19,8 +17,8 @@ local Window = Fluent:CreateWindow({
 
 -- Tabs com ícones mais modernos
 local Tabs = {
-    Farm = Window:AddTab({ Title = " | Farm", Icon = "" }),
-    Summon = Window:AddTab({ Title = " | Summon", Icon = "" }),
+    Main = Window:AddTab({ Title = " | Farm", Icon = "" }),
+    Egg = Window:AddTab({ Title = " | Summon", Icon = "" }),
     Settings = Window:AddTab({ Title = " | Setting", Icon = "settings" })
 }
 
@@ -89,6 +87,25 @@ end)
 
 -- Toggle Auto Egg
 local AutoEggToggle = Tabs.Egg:AddToggle("AutoEggToggle", {Title = "Auto Egg", Default = false})
+AutoEggToggle:OnChanged(function(enabled)
+    if enabled then
+        task.spawn(function()
+            while AutoEggToggle.Value and task.wait(1) do
+                local args = {
+                    [1] = {
+                        [1] = "BuyTier",
+                        [2] = workspace.Client.Maps:FindFirstChild("Piece Sea").Tier:FindFirstChild("Basic Tier"),
+                        [3] = "E",
+                        [4] = {}
+                    }
+                }
+                pcall(function()
+                    game:GetService("ReplicatedStorage").Remotes.Server:FireServer(unpack(args))
+                end)
+            end
+        end)
+    end
+end)
 
 -- Save Manager (salvamento automático dos toggles e configs)
 SaveManager:SetLibrary(Fluent)
@@ -104,4 +121,3 @@ InterfaceManager:BuildInterfaceSection(Tabs.Settings)
 
 -- Carrega último perfil salvo automaticamente
 SaveManager:LoadAutoloadConfig()
-
