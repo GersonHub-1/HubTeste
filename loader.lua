@@ -1,13 +1,13 @@
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 local Window = Rayfield:CreateWindow({
-   Name = "Hallow Hub | Evo Tycoon",
+   Name = "Alucard Hub | Evo Tycoon",
    Icon = 17091459839,
-   LoadingTitle = "Hallow Hub",
-   LoadingSubtitle = "By Moligrafi",
+   LoadingTitle = "Alucard Hub",
+   LoadingSubtitle = "By Alucard",
    Theme = "Amethyst"
 })
-
-local MainTab = Window:CreateTab("Main", 17091459839)
+--Tabs
+local MainTab = Window:CreateTab("Main Farm", 17091459839)
 
 -- Variáveis de controle
 local autoClickEnabled = false
@@ -54,7 +54,7 @@ MainTab:CreateToggle({
                 }
                 game:GetService("ReplicatedStorage").Remotes.Server:FireServer(unpack(args))
             end
-            task.wait(0.1)
+            wait()
          end
       end)
    end,
@@ -78,7 +78,7 @@ MainTab:CreateToggle({
                 }
             }
             game:GetService("ReplicatedStorage").Remotes.Server:FireServer(unpack(args))
-            task.wait(1)
+            wait()
          end
       end)
    end,
