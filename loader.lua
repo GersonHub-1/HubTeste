@@ -1,8 +1,10 @@
+-- Carregar Fluent UI e outros módulos
 local Fluent = loadstring(game:HttpGet("https://raw.githubusercontent.com/discoart/FluentPlus/refs/heads/main/release.lua"))()
 local SaveManager = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
 local InterfaceManager = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
 
 local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
 local player = Players.LocalPlayer
 
 -- Janela principal
@@ -48,7 +50,10 @@ AutoTrialToggle:OnChanged(function(enabled)
         task.spawn(function()
             while Options.AutoTrialToggle.Value do
                 local hrp = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
-                if not hrp then task.wait() continue end
+                if not hrp then
+                    task.wait()
+                    continue
+                end
 
                 local mobsFolder = workspace:FindFirstChild("Client")
                     and workspace.Client:FindFirstChild("Maps")
@@ -78,7 +83,7 @@ AutoTrialToggle:OnChanged(function(enabled)
     end
 end)
 
--- Auto Click Otimizado e Universal
+-- Auto Click
 local AutoClickToggle = Tabs.Main:AddToggle("AutoClickToggle", {
     Title = "Auto Click",
     Default = false
@@ -108,7 +113,7 @@ AutoClickToggle:OnChanged(function(enabled)
 
                                 if mobPos then
                                     local distance = (rootPart.Position - mobPos).Magnitude
-                                    if distance < 100 then -- otimização: ataca apenas próximos
+                                    if distance < 100 then
                                         local args = {
                                             [1] = {
                                                 [1] = "Mob",
@@ -129,7 +134,42 @@ AutoClickToggle:OnChanged(function(enabled)
                         end
                     end
                 end
-                task.wait(0.1) -- pequena pausa para evitar travamentos
+                task.wait(0.1)
+            end
+        end)
+    end
+end)
+
+-- Auto Collect (Itens vêm suavemente até o jogador)
+local AutoCollectToggle = Tabs.Main:AddToggle("AutoCollectToggle", {
+    Title = "Auto Collect",
+    Default = false
+})
+
+AutoCollectToggle:OnChanged(function(enabled)
+    if enabled then
+        task.spawn(function()
+            while Options.AutoCollectToggle.Value do
+                local hrp = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
+                if hrp then
+                    for _, child in ipairs(workspace.Debris:GetChildren()) do
+                        local targetCFrame = hrp.CFrame + Vector3.new(0, 2, 0)
+
+                        if child:IsA("Part") then
+                            local tween = TweenService:Create(child, TweenInfo.new(0.5), {
+                                CFrame = targetCFrame
+                            })
+                            tween:Play()
+
+                        elseif child:IsA("Model") and child.PrimaryPart then
+                            local tween = TweenService:Create(child.PrimaryPart, TweenInfo.new(0.5), {
+                                CFrame = targetCFrame
+                            })
+                            tween:Play()
+                        end
+                    end
+                end
+                task.wait(1)
             end
         end)
     end
