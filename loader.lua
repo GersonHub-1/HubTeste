@@ -1,129 +1,90 @@
-local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
-local Window = Rayfield:CreateWindow({
-   Name = "Alucard Hub | Evo Tycoon",
-   Icon = 17091459839,
-   LoadingTitle = "Alucard Hub",
-   LoadingSubtitle = "By Alucard",
-   Theme = "Amethyst"
+local Fluent = loadstring(game:HttpGet("https://raw.githubusercontent.com/discoart/FluentPlus/refs/heads/main/release.lua"))()
+local SaveManager = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
+local InterfaceManager = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
+
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+
+-- Janela principal
+local Window = Fluent:CreateWindow({
+    Title = "Alucard Hub",
+    SubTitle = "by alucard",
+    TabWidth = 120,
+    Size = UDim2.fromOffset(580, 400),
+    Acrylic = false,
+    Theme = "Dark",
+    MinimizeKey = Enum.KeyCode.LeftControl
 })
---Tabs
-local MainTab = Window:CreateTab("Main Farm", 17091459839)
 
--- Variáveis de controle
-local autoClickEnabled = false
-local autoEggEnabled = false
-local autoCollectEnabled = false
+local Tabs = {
+    Infos = Window:AddTab({ Title = " | Script Infos", Icon = "info" }),
+    Setup = Window:AddTab({ Title = "  | Setup", Icon = "banana" }),
+    Main = Window:AddTab({ Title = " | Farm", Icon = "swords" }),
+    Summon = Window:AddTab({ Title = " | Summon", Icon = "egg" }),
+    Gamemodes = Window:AddTab({ Title = " | Gamemodes", Icon = "swords" }),
+    Raid = Window:AddTab({ Title = " | Raid", Icon = "sword" }),
+    Portal = Window:AddTab({ Title = " | Portal", Icon = "target" }),
+    Teleport = Window:AddTab({ Title = "| Teleport", Icon = "map-pin" }),
+    Roll = Window:AddTab({ Title = "| Roll", Icon = "user" }),
+    Settings = Window:AddTab({ Title = "| Settings", Icon = "settings" }),
+}
 
--- Auto Click
-MainTab:CreateToggle({
-   Name = "Auto Click",
-   CurrentValue = false,
-   Callback = function(Value)
-      autoClickEnabled = Value
+local Options = Fluent.Options
 
-      task.spawn(function()
-         while autoClickEnabled do
-            local function getClosestPart()
-                local closestPart = nil
-                local shortestDistance = math.huge
-                local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+-- Configurações padrão
+getgenv().Settings = {
+    DefaultDelay = 0.5,
+    MinDelay = 0.05,
+    MaxDelay = 5
+}
 
-                for _, part in pairs(workspace.Server.Mobs:GetDescendants()) do
-                    if part:IsA("Part") then
-                        local distance = (part.Position - playerPos).Magnitude
-                        if distance < shortestDistance then
-                            shortestDistance = distance
-                            closestPart = part
+-- Toggle de Auto Trial
+local AutoTrialToggle = Tabs.Gamemodes:AddToggle("AutoTrialToggle", {
+    Title = "Auto Trial",
+    Default = false
+})
+
+AutoTrialToggle:OnChanged(function(enabled)
+    if enabled then
+        task.spawn(function()
+            while Options.AutoTrialToggle.Value do
+                local hrp = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
+                if not hrp then wait() continue end
+
+                local mobsFolder = workspace:FindFirstChild("Client")
+                    and workspace.Client:FindFirstChild("Maps")
+                    and workspace.Client.Maps:FindFirstChild("Trial Easy")
+                    and workspace.Client.Maps["Trial Easy"]:FindFirstChild("Mobs")
+
+                if mobsFolder then
+                    local mobs = mobsFolder:GetChildren()
+
+                    for _, mob in ipairs(mobs) do
+                        if not Options.AutoTrialToggle.Value then break end
+                        if mob:IsA("Model") and mob:FindFirstChild("HumanoidRootPart") then
+                            local mobHRP = mob.HumanoidRootPart
+                            local humanoid = mob:FindFirstChildOfClass("Humanoid")
+
+                            -- Teleporta de frente para o mob
+                            local targetPos = mobHRP.CFrame * CFrame.new(0, 0, -5)
+                            local lookAt = CFrame.new(targetPos.Position, mobHRP.Position)
+                            hrp.CFrame = lookAt
+
+                            -- Verifica constantemente se o mob morreu/desapareceu
+                            while mob.Parent == mobsFolder and Options.AutoTrialToggle.Value do
+                                if humanoid and humanoid.Health <= 0 then break end
+                                wait() -- verificação rápida
+                            end
                         end
                     end
                 end
 
-                return closestPart
+                wait()
             end
+        end)
+    end
+end)
 
-            local closest = getClosestPart()
-            if closest then
-                local args = {
-                    [1] = {
-                        [1] = "Click"
-                    },
-                    [2] = {
-                        [1] = "Mob",
-                        [2] = closest
-                    }
-                }
-                game:GetService("ReplicatedStorage").Remotes.Server:FireServer(unpack(args))
-            end
-            wait()
-         end
-      end)
-   end,
-})
 
--- Auto Egg
-MainTab:CreateToggle({
-   Name = "Auto Egg",
-   CurrentValue = false,
-   Callback = function(Value)
-      autoEggEnabled = Value
 
-      task.spawn(function()
-         while autoEggEnabled do
-            local args = {
-                [1] = {
-                    [1] = "BuyTier",
-                    [2] = workspace.Client:FindFirstChild("Summon Stars"):FindFirstChild("Demon Slayer"):FindFirstChild("Basic Tier"),
-                    [3] = "E",
-                    [4] = "Demon Slayer"
-                }
-            }
-            game:GetService("ReplicatedStorage").Remotes.Server:FireServer(unpack(args))
-            wait()
-         end
-      end)
-   end,
-})
 
--- Auto Collect
-MainTab:CreateToggle({
-   Name = "Auto Collect",
-   CurrentValue = false,
-   Callback = function(Value)
-      autoCollectEnabled = Value
-
-      if autoCollectEnabled then
-         local player = game.Players.LocalPlayer
-         local character = player.Character or player.CharacterAdded:Wait()
-         local debrisFolder = workspace:WaitForChild("Debris")
-         local runService = game:GetService("RunService")
-
-         local function moveToCharacter(obj)
-            local connection
-            connection = runService.Heartbeat:Connect(function()
-               if obj and obj.Parent and character and character:FindFirstChild("HumanoidRootPart") then
-                  local targetPos = character.HumanoidRootPart.Position
-                  local direction = (targetPos - obj.Position).Unit
-                  local speed = 10
-                  obj.Velocity = direction * speed
-               else
-                  connection:Disconnect()
-               end
-            end)
-         end
-
-         -- Objetos já existentes
-         for _, obj in ipairs(debrisFolder:GetChildren()) do
-            if obj:IsA("BasePart") then
-               moveToCharacter(obj)
-            end
-         end
-
-         -- Novos objetos
-         debrisFolder.ChildAdded:Connect(function(obj)
-            if obj:IsA("BasePart") then
-               moveToCharacter(obj)
-            end
-         end)
-      end
-   end,
-})
