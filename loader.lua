@@ -228,7 +228,8 @@ AutoNearestToggle:OnChanged(function(enabled)
 end)
 
 -- Summon: Auto Egg com Dropdown
-local eggList = { "Demon Slayer", "Dragon Ball", "Jujutsu", "Bleach", "One Piece" }
+local eggList = {
+  "Demon Slayer"}
 
 local SelectedEgg = Tabs.Summon:AddDropdown("SelectEggDropdown", {
     Title = "Selecione Egg",
