@@ -227,10 +227,32 @@ AutoNearestToggle:OnChanged(function(enabled)
     end
 end)
 
+-- Auto Rank
+local AutoRankToggle = Tabs.Main:AddToggle("AutoRankToggle", {
+    Title = "Auto Rank",
+    Default = false
+})
+
+AutoRankToggle:OnChanged(function(enabled)
+    if enabled then
+        task.spawn(function()
+            while Options.AutoRankToggle.Value do
+                local args = {
+                    [1] = {
+                        [1] = "Rank Up"
+                    }
+                }
+                game:GetService("ReplicatedStorage").Remotes.Server:FireServer(unpack(args))
+                task.wait(5) -- ajuste o delay se necessário
+            end
+        end)
+    end
+end)
+
 -- Summon: Auto Egg com Dropdown
 local eggList = {
-  "Demon Slayer",
-  "Dragon Ball"
+    "Demon Slayer",
+    "Dragon Ball"
 }
 
 local SelectedEgg = Tabs.Summon:AddDropdown("SelectEggDropdown", {
