@@ -229,7 +229,9 @@ end)
 
 -- Summon: Auto Egg com Dropdown
 local eggList = {
-  "Demon Slayer"}
+  "Demon Slayer",
+  "Dragon Ball"
+}
 
 local SelectedEgg = Tabs.Summon:AddDropdown("SelectEggDropdown", {
     Title = "Selecione Egg",
