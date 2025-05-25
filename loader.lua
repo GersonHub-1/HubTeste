@@ -140,7 +140,7 @@ AutoClickToggle:OnChanged(function(enabled)
     end
 end)
 
--- Auto Collect (Itens vêm suavemente até o jogador)
+-- Auto Collect
 local AutoCollectToggle = Tabs.Main:AddToggle("AutoCollectToggle", {
     Title = "Auto Collect",
     Default = false
@@ -170,6 +170,69 @@ AutoCollectToggle:OnChanged(function(enabled)
                     end
                 end
                 task.wait(1)
+            end
+        end)
+    end
+end)
+
+-- Auto Nearest
+local AutoNearestToggle = Tabs.Main:AddToggle("AutoNearestToggle", {
+    Title = "Auto Nearest",
+    Default = false
+})
+
+AutoNearestToggle:OnChanged(function(enabled)
+    if enabled then
+        task.spawn(function()
+            local mobsRoot = workspace:FindFirstChild("Server") and workspace.Server:FindFirstChild("Mobs")
+            if not mobsRoot then return end
+
+            while Options.AutoNearestToggle.Value do
+                local character = player.Character or player.CharacterAdded:Wait()
+                local hrp = character:WaitForChild("HumanoidRootPart")
+
+                local function waitForMobToDie(mob)
+                    local hp = mob:GetAttribute("HP")
+                    while hp and hp > 0 and Options.AutoNearestToggle.Value do
+                        task.wait(0.2)
+                        hp = mob:GetAttribute("HP")
+                    end
+                end
+
+                local function detectCurrentMap()
+                    local closestMap = nil
+                    local shortestDistance = math.huge
+                    for _, mapFolder in ipairs(mobsRoot:GetChildren()) do
+                        if mapFolder:IsA("Folder") then
+                            for _, mob in ipairs(mapFolder:GetChildren()) do
+                                if mob:IsA("BasePart") then
+                                    local distance = (hrp.Position - mob.Position).Magnitude
+                                    if distance < shortestDistance then
+                                        shortestDistance = distance
+                                        closestMap = mapFolder
+                                    end
+                                end
+                            end
+                        end
+                    end
+                    return closestMap
+                end
+
+                local currentMap = detectCurrentMap()
+                if currentMap then
+                    for _, mob in ipairs(currentMap:GetChildren()) do
+                        if not Options.AutoNearestToggle.Value then break end
+                        if mob:IsA("BasePart") and mob:GetAttribute("HP") and mob:GetAttribute("HP") > 0 then
+                            local mobPos = mob.Position
+                            hrp.CFrame = CFrame.new(mobPos + Vector3.new(0, 6, 0))
+                            waitForMobToDie(mob)
+                        end
+                    end
+                else
+                    warn("Nenhum mapa detectado por proximidade.")
+                end
+
+                task.wait(0.5)
             end
         end)
     end
