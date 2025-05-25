@@ -50,10 +50,7 @@ AutoTrialToggle:OnChanged(function(enabled)
         task.spawn(function()
             while Options.AutoTrialToggle.Value do
                 local hrp = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
-                if not hrp then
-                    task.wait()
-                    continue
-                end
+                if not hrp then task.wait() continue end
 
                 local mobsFolder = workspace:FindFirstChild("Client")
                     and workspace.Client:FindFirstChild("Maps")
@@ -156,16 +153,9 @@ AutoCollectToggle:OnChanged(function(enabled)
                         local targetCFrame = hrp.CFrame + Vector3.new(0, 2, 0)
 
                         if child:IsA("Part") then
-                            local tween = TweenService:Create(child, TweenInfo.new(0.5), {
-                                CFrame = targetCFrame
-                            })
-                            tween:Play()
-
+                            TweenService:Create(child, TweenInfo.new(0.5), {CFrame = targetCFrame}):Play()
                         elseif child:IsA("Model") and child.PrimaryPart then
-                            local tween = TweenService:Create(child.PrimaryPart, TweenInfo.new(0.5), {
-                                CFrame = targetCFrame
-                            })
-                            tween:Play()
+                            TweenService:Create(child.PrimaryPart, TweenInfo.new(0.5), {CFrame = targetCFrame}):Play()
                         end
                     end
                 end
@@ -223,8 +213,7 @@ AutoNearestToggle:OnChanged(function(enabled)
                     for _, mob in ipairs(currentMap:GetChildren()) do
                         if not Options.AutoNearestToggle.Value then break end
                         if mob:IsA("BasePart") and mob:GetAttribute("HP") and mob:GetAttribute("HP") > 0 then
-                            local mobPos = mob.Position
-                            hrp.CFrame = CFrame.new(mobPos + Vector3.new(0, 6, 0))
+                            hrp.CFrame = CFrame.new(mob.Position + Vector3.new(0, 6, 0))
                             waitForMobToDie(mob)
                         end
                     end
@@ -237,3 +226,52 @@ AutoNearestToggle:OnChanged(function(enabled)
         end)
     end
 end)
+
+-- Summon: Auto Egg com Dropdown
+local eggList = { "Demon Slayer", "Dragon Ball", "Jujutsu", "Bleach", "One Piece" }
+
+local SelectedEgg = Tabs.Summon:AddDropdown("SelectEggDropdown", {
+    Title = "Selecione Egg",
+    Values = eggList,
+    Multi = false,
+    Default = eggList[1]
+})
+
+local AutoEggToggle = Tabs.Summon:AddToggle("AutoEggToggle", {
+    Title = "Auto Egg",
+    Default = false
+})
+
+AutoEggToggle:OnChanged(function(enabled)
+    if enabled then
+        task.spawn(function()
+            while Options.AutoEggToggle.Value do
+                local selected = Options.SelectEggDropdown.Value
+                local tierPath = workspace:FindFirstChild("Client") and workspace.Client:FindFirstChild("Summon Stars")
+                if tierPath then
+                    local eggFolder = tierPath:FindFirstChild(selected)
+                    if eggFolder and eggFolder:FindFirstChild("Basic Tier") then
+                        local args = {
+                            [1] = {
+                                [1] = "BuyTier",
+                                [2] = eggFolder:FindFirstChild("Basic Tier"),
+                                [3] = "E",
+                                [4] = selected
+                            }
+                        }
+                        game:GetService("ReplicatedStorage").Remotes.Server:FireServer(unpack(args))
+                    end
+                end
+                task.wait(1)
+            end
+        end)
+    end
+end)
+
+-- Salvar Configurações
+SaveManager:SetLibrary(Fluent)
+InterfaceManager:SetLibrary(Fluent)
+SaveManager:BuildConfigSection(Tabs.Settings)
+InterfaceManager:BuildInterfaceSection(Tabs.Settings)
+
+SaveManager:LoadAutoloadConfig()
